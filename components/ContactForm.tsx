@@ -7,8 +7,13 @@ type Props = {
 type FormInputProps = {
     type: string,
     name: string,
-    onChange: (str:string) => void,
-    defaultValue?: string
+    onChange: (str:React.ChangeEvent<HTMLInputElement>) => void,
+    onBlur?: (name: string) => void,
+    onFocus?: (name: string) => void
+    defaultValue?: string,
+    error?: string,
+    value: string
+
 }
 
 
@@ -17,110 +22,170 @@ function FormInput (
      type, 
      name, 
      defaultValue, 
-     onChange
+     onChange,
+     onBlur,
+     onFocus,
+
+     error,
+     value
     } : FormInputProps
 ) { 
 
-    //Setvalue is not instant, it is async and will not update the value of the input until the next render
-    const [
-        value,
-        setValue
-    ] = useState(defaultValue || '');
-
-    const [data, setData] = useState<any>(null)
-    const [error, setError] = useState('');
-    //You can use useEffect to subscribe to changes in the value state
     
-   
-
-    //If the useeffect ARRAY is empty it will only run once on the first render
-    useEffect(() => {
-        const apiCall = async () => {
-            const response = await fetch('https://jsonplaceholder.typicode.com/todos/1', {
-                
-            })
-            await new Promise((resolve) => setTimeout(resolve, 5000))
-            const data = await response.json()
-            setData(data)
-        }
-        apiCall()
-    },[])
-
-    useEffect(() => {
-        if(value === 'test'){
-            setError('Invalid Input')
-            return
-        } 
-        if(value === 'test2'){
-            setError('Invalid Input 2')
-            return
-        }
-
-
-        setError('')
-
-    }, [
-        value
-    ]);
-
-
-    if(!data){
-        return <div>Loading...</div>
-    }
-
     
-
-    const handleValueChange = (e:React.ChangeEvent<HTMLInputElement>) => {
-
-        const newValue = e.target.value;
-        
-        console.log("Current Value: ",value)
-        setValue(newValue)
-        console.log("Current Value After Update: ", value)
-        onChange(newValue)
-    }
-
 
 
     return (
-    <>
-    {JSON.stringify(data)}
-    </>
+    <div className='flex flex-col gap-2'>
+        <span className='capitalize'>{name}</span>
+        <input 
+        className='w-full px-2 py-1 border border-gray-300 rounded-lg'
+        type={type} name={name}
+        defaultValue={defaultValue}
+        value={value} onChange={onChange} 
+        onBlur={() => {
+            if(onBlur){
+                onBlur(name)
+            }
+        }}
+        onFocus={() => {
+            if(onFocus){
+                onFocus(name)
+            }
+        }}
+        />
+        <div className='text-red-500'>{error}</div>
+        
+    </div>
     )
 }
 
 
-//SERVICES
-// -> AUTHENTICATION
 
 function ContactForm({}: Props) {
 
 
-    const [num1, setNum1] = useState(0);
-    const [num2, setNum2] = useState(0);
+    const [contactState, setContactState] = useState({
+        email: '',
+        name: '',
+        message: ''
+    });
 
-    const handleSubmit = useCallback(() => {
 
-        return num2 * num1;
-    }, [num1, num2]);
+    const [formErrors, setFormErrors] = useState({
+        emailError: '',
+        nameError: '',
+        messageError: ''
+    });
+
+    const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+
+        const {name, value} = e.target;
+
+
+       
+
+        //When we update it is not instant
+
+
+        
+        setContactState((prev) => ({
+            ...prev,
+            [name]: value
+        }))
+
+    },[])
+
 
     
+    
+    const handleInputBlur = useCallback((inputName:string) => {
+        
+        const validateEmail = ()=> {
+            if(contactState.email === '') {
+                setFormErrors(prev => ({
+                        ...prev,
+                        emailError: 'This cannot be empty'
+                }))
+                return;
+            }
+
+            setFormErrors(prev => ({
+                ...prev,
+                emailError: ''
+            }))
+        }
+        const validateName = ()=> {
+            if(contactState.name === '') {
+                setFormErrors(prev => ({
+                        ...prev,
+                        nameError: 'This cannot be empty'
+                }))
+                return;
+            }
+            setFormErrors(prev => ({
+                ...prev,
+                nameError: ''
+            }))
+        }
+
+        if(inputName === 'email'){
+            validateEmail()
+
+        }
+        if(inputName === 'name'){
+        validateName()
+        }
+
+    },[contactState])
+
+    const handleInputFocus = useCallback((inputName:string) => {
+
+        setFormErrors(prev => ({
+            ...prev,
+            [`${inputName}Error`]: ''
+        }))
+    },[formErrors])
+
+
+
+    
+    
+
   return (
     <div className='h-screen w-full bg-slate-50 flex items-center justify-center'>
 
         <form>
-         
-
             <FormInput 
             type='email'
             name='email'
-            onChange={() => {
-
-            }}
+            onChange={handleInputChange}
+            error={formErrors.emailError}
+            value={contactState.email}
+            onBlur={handleInputBlur}
+            onFocus={handleInputFocus}
+            />
+            <FormInput
+            type='text'
+            name='name'
+            onChange={handleInputChange}
+            error={formErrors.nameError}
+            value={contactState.name}
+            onBlur={handleInputBlur}
+            onFocus={handleInputFocus}
+            />
+            <FormInput
+            type='text'
+            name='message'
+            onChange={handleInputChange}
+            error={formErrors.messageError}
+            value={contactState.message}
+            onBlur={handleInputBlur}
+            onFocus={handleInputFocus}
             />
 
-            <button type='submit'>SEND</button>
-        </form>
+            <button className='bg-blue-500 px-2 py-1 rounded-lg w-full text-white'>Submit</button>
+        </form> 
     </div>
   )
 }
