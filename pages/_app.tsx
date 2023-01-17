@@ -18,18 +18,13 @@ function MyApp({ Component, pageProps }: AppProps) {
       link: '/'
    },
    {
-     text: 'MultiForm',
-     link: '/form'
-   },
-   {
      text: 'Contact',
      link: '/contact'
    }
-  
   ]}
   />
  
-  <Component {...pageProps} />
+ <Component {...pageProps} />
   </div>  
   )
 }
