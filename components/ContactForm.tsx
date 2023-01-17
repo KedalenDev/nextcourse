@@ -17,23 +17,21 @@ type FormInputProps = {
 }
 
 
-function FormInput (
-    {
+function FormInput ({
      type, 
      name, 
      defaultValue, 
      onChange,
      onBlur,
      onFocus,
-
      error,
      value
-    } : FormInputProps
-) { 
+    } : FormInputProps) { 
 
     
-    
-
+    /*TO MAKE AN API CALL WE USE THE 
+    fetch()
+    */
 
     return (
     <div className='flex flex-col gap-2'>
@@ -184,7 +182,9 @@ function ContactForm({}: Props) {
             onFocus={handleInputFocus}
             />
 
-            <button className='bg-blue-500 px-2 py-1 rounded-lg w-full text-white'>Submit</button>
+            <button className='bg-blue-500 px-2 py-1 rounded-lg w-full text-white'>
+                Submit
+            </button>
         </form> 
     </div>
   )
