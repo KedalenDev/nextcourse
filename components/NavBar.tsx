@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import NextLink from 'next/link'
 import { useRouter } from 'next/router'
 
@@ -51,6 +51,12 @@ function NavBar({
 
    const router = useRouter();
 
+ 
+
+
+
+
+
 
   return (
     <div
@@ -58,15 +64,9 @@ function NavBar({
     >
         {title}
         <div className='flex gap-3 '>
-        {links.map((item, index)=> {
 
-            return <NavBarItem 
-            key={item.text}
-            active={router.asPath === item.link}
-            title={item.text}
-            link={item.link}
-            />
-        })}
+
+        {<div>NAV BAR</div> }
         </div>
     </div>
   )

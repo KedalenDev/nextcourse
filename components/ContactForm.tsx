@@ -30,7 +30,7 @@ function FormInput ({
 
     
     /*TO MAKE AN API CALL WE USE THE 
-    fetch()
+    fetch()     
     */
 
     return (

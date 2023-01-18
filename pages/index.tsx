@@ -1,6 +1,6 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import Link from 'next/link'
+
 
 
 //TODO 
@@ -12,7 +12,6 @@ import Link from 'next/link'
 
 const Home: NextPage = () => {
 
-
   return (
     <div className="flex min-h-screen flex-col items-center justify-center py-2">
       
@@ -21,9 +20,7 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Link href='/multiform'>
-        GO TO MULTIFORM
-        </Link>
+      
     </div>
   )
 }
