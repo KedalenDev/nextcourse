@@ -6,7 +6,9 @@ type Props = {}
 
 
 const STEPS = [
-  <div>STEP 1</div>, <div>STEP 2</div>, <div>STEP 3</div>,<div>STEP 4</div>
+  <div>
+    
+  </div>, <div>STEP 2</div>, <div>STEP 3</div>,<div>STEP 4</div>
 ]
 
 function Multiform({}: Props) {
