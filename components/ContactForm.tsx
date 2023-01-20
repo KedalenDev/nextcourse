@@ -1,4 +1,5 @@
-import React, { useCallback, useState, useEffect } from 'react'
+import React, { useCallback, useState, useEffect, useContext } from 'react'
+import { MultiStepContext } from '../context/MultiStepContext'
 
 type Props = {
 
@@ -63,18 +64,8 @@ function FormInput ({
 function ContactForm({}: Props) {
 
 
-    const [contactState, setContactState] = useState({
-        email: '',
-        name: '',
-        message: ''
-    });
+    const {setExternalError, error, addData, data} = useContext(MultiStepContext)
 
-
-    const [formErrors, setFormErrors] = useState({
-        emailError: '',
-        nameError: '',
-        messageError: ''
-    });
 
     const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
 
@@ -87,10 +78,7 @@ function ContactForm({}: Props) {
 
 
         
-        setContactState((prev) => ({
-            ...prev,
-            [name]: value
-        }))
+        addData(name, value)
 
     },[])
 
@@ -101,17 +89,14 @@ function ContactForm({}: Props) {
         
         const validateEmail = ()=> {
             if(contactState.email === '') {
-                setFormErrors(prev => ({
-                        ...prev,
-                        emailError: 'This cannot be empty'
-                }))
+
+                setExternalError('email', 'This cannot be empty')
+
+                
                 return;
             }
 
-            setFormErrors(prev => ({
-                ...prev,
-                emailError: ''
-            }))
+            setExternalError('email', '')
         }
         const validateName = ()=> {
             if(contactState.name === '') {
@@ -158,8 +143,8 @@ function ContactForm({}: Props) {
             type='email'
             name='email'
             onChange={handleInputChange}
-            error={formErrors.emailError}
-            value={contactState.email}
+            error={error.email}
+            value={data.email}
             onBlur={handleInputBlur}
             onFocus={handleInputFocus}
             />

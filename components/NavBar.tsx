@@ -1,6 +1,7 @@
 import React, { useContext } from 'react'
 import NextLink from 'next/link'
 import { useRouter } from 'next/router'
+import { LanguageContext } from '../context/LangaugeContext'
 
 
 
@@ -23,6 +24,21 @@ type NavBarProps = {
     orientation?: 'vertical' | 'horizontal'
     
 }
+
+
+function ToggleLanguage({langName}:{langName:string}) {
+
+    const {changeLanguage} = useContext(LanguageContext)
+
+    return (
+        <button 
+        onClick={e => changeLanguage(langName)}
+        className='bg-gray-900 font-black text-white px-2 rounded-md'>
+            {langName}
+        </button>
+    )
+}
+
 function NavBarItem({
     title,
     link,
@@ -66,7 +82,11 @@ function NavBar({
         <div className='flex gap-3 '>
 
 
-        {<div>NAV BAR</div> }
+        <ToggleLanguage langName='CAT'/>
+        <ToggleLanguage langName='ESP'/>
+        <ToggleLanguage langName='ENG'/>
+        <ToggleLanguage langName='FRA'/>
+
         </div>
     </div>
   )
