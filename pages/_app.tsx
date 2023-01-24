@@ -1,17 +1,19 @@
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 import NavBar from '../components/NavBar'
-import { LanguageContextProver } from '../context/LangaugeContext'
+import { useEffect } from 'react'
+import { LanguageContextProvider } from '../context/LangaugeContext'
 
 
 function MyApp({ Component, pageProps }: AppProps) {
   
 
 
+  
+
 
 
   return (
-  <LanguageContextProver>
   <div>
   <NavBar
   title='Kennwort'
@@ -24,13 +26,20 @@ function MyApp({ Component, pageProps }: AppProps) {
    {
      text: 'Contact',
      link: '/contact'
+   },
+   {
+      text: 'CountDown',
+      link: '/countdown'
+   },
+   {
+      text:  'Chart',
+      link: '/pieChart'
    }
   ]}
   />
  
  <Component {...pageProps} />
   </div>  
-  </LanguageContextProver>
   )
 }
 
@@ -39,7 +48,11 @@ function MyApp({ Component, pageProps }: AppProps) {
 function AppWrapper(appParameters: AppProps) {
 
   return (
+    <LanguageContextProvider 
+    defaultLanguage='ENG'
+    >
       <MyApp {...appParameters} />
+    </LanguageContextProvider>
 
   )
 }

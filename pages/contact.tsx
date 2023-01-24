@@ -5,16 +5,9 @@ type Props = {
 }
 
 function Contact({}: Props) {
-
-  //STATE IS USEFUL FOR STORING DATA THAT IS GOING TO CHANGE AND FOR SINGLE COMPONENTS WE SHOULD CONTEXT API FOR SHARING DATA BETWEEN COMPONENTS
-
   return (
-      <div>
-        <div>
-
-        </div>
-      </div>
-    )
+    <ContactForm />
+  )
 }
 
 export default Contact

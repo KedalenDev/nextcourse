@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import NextLink from 'next/link'
 import { useRouter } from 'next/router'
-import { LanguageContext } from '../context/LangaugeContext'
+import { LanguageContext, LANG_CODES } from '../context/LangaugeContext'
 
 
 
@@ -24,21 +24,6 @@ type NavBarProps = {
     orientation?: 'vertical' | 'horizontal'
     
 }
-
-
-function ToggleLanguage({langName}:{langName:string}) {
-
-    const {changeLanguage} = useContext(LanguageContext)
-
-    return (
-        <button 
-        onClick={e => changeLanguage(langName)}
-        className='bg-gray-900 font-black text-white px-2 rounded-md'>
-            {langName}
-        </button>
-    )
-}
-
 function NavBarItem({
     title,
     link,
@@ -50,7 +35,7 @@ function NavBarItem({
 
     return (
         <NextLink href={link}>
-        <div className={` ${active ? 'bg-blue-200' : 'bg-gray-300'} px-2 py-1 rounded-lg`}>
+        <div className={`${active ? 'bg-blue-200' : 'bg-gray-300'} px-2 py-1 rounded-lg`}>
             {title}
         </div>
         </NextLink>
@@ -66,13 +51,7 @@ function NavBar({
 }: NavBarProps) {
 
    const router = useRouter();
-
- 
-
-
-
-
-
+   const {currentLanguageCode, changeLanguage} = useContext(LanguageContext)
 
   return (
     <div
@@ -80,13 +59,23 @@ function NavBar({
     >
         {title}
         <div className='flex gap-3 '>
+        {links.map((item, index)=> {
 
-
-        <ToggleLanguage langName='CAT'/>
-        <ToggleLanguage langName='ESP'/>
-        <ToggleLanguage langName='ENG'/>
-        <ToggleLanguage langName='FRA'/>
-
+            return <NavBarItem 
+            key={item.text}
+            active={router.asPath === item.link}
+            title={item.text}
+            link={item.link}
+            />
+        })}
+        <select value={currentLanguageCode} onChange={e => {
+            changeLanguage(e.target.value as LANG_CODES)
+        }}>
+            <option value={'ESP'}>ESP</option>
+            <option value={'ENG'}>ENG</option>
+            <option value={'FRA'}>FRA</option>
+            <option value={'CAT'}>CAT</option>
+        </select>
         </div>
     </div>
   )

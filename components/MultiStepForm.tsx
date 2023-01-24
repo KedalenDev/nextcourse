@@ -8,38 +8,31 @@ import { MultiStepContext, MultiStepContextProvider } from '../context/MultiStep
 type Props = {}
 
 
-
-
-
-
-
-
 function MultiStepForm({}: Props) {
 
-    const {
-        totalSteps,
-        currentStep,
-        next,
-        back,
-        error,
-        currentStepNumber
-    } = useContext(MultiStepContext)
-
-
- 
+  const {
+    totalSteps,
+    currentStep,
+    next,
+    back,
+    fieldErrors,
+    formError,
+    currentStepNumber
+  } = useContext(MultiStepContext)
     
 
   return (
-    <form 
-    onSubmit={e => {e.preventDefault();}}
-    className='max-w-6xl mx-auto bg-gray-200 p-8 rounded-md shadow-lg mt-12 flex flex-col gap-8'>
+    <form onSubmit={e => {e.preventDefault();}}
+    className='w-full p-5'>
         <span>Current Step: {currentStepNumber + 1} / {totalSteps.length}</span>
+        <span className='text-red-500 text-lg'>{formError}</span>
         {currentStep.component}
         <div className='w-full flex flex-row gap-3'>
-            <button 
+        <button 
             className='bg-gray-800 font-black text-white px-3 py-2 disabled:bg-black disabled:text-black'
             disabled={currentStepNumber === 0}
             onClick={back}>BACK</button>
+
             <button 
             onClick={next}
             className='bg-gray-800 font-black text-white px-3 py-2 disabled:bg-black disabled:text-black'>

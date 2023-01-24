@@ -2,3 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+.contactform.flex.flex-col.gap-2 {
+    width: 100%;
+    float: left;
+}
+.inputradio.flex.flex-col.gap-2 {
+    display: inline-flex;
+    margin: 20px 15px;
+}
