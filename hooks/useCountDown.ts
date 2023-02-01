@@ -1,5 +1,5 @@
 import moment from 'moment';
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 
 export type useCountDownProps = {
@@ -9,14 +9,18 @@ export type useCountDownProps = {
 const DATE_FORMAT = "YYYY-MM-DD HH:mm:ss";
 
 
+//NOW + 5 MIN
+
+//1999
 export const useCountDown = ({
     targetTime,
     isPastDate
 }: useCountDownProps) => {
 
-    const targetAsMoment = moment(targetTime, DATE_FORMAT)
+    const [targetAsMoment, setTargetAsMoment] = useState(moment(targetTime, DATE_FORMAT))
 
-    const [currentDiff, setCurrentDiff] = React.useState(targetTime)
+    const [now, setNow] = useState(moment())
+    const [currentDiff, setCurrentDiff] = React.useState(targetTime || '0d 0h 0m 0s')
 
     React.useEffect(() => {
 
@@ -48,7 +52,8 @@ export const useCountDown = ({
 
     return {
         formattedDiff: currentDiff.toString(),
-        now: moment().format(DATE_FORMAT),
+        now: now.format(DATE_FORMAT),
         target: targetAsMoment.format(DATE_FORMAT),
+        isInThePast: isPastDate === true || moment().isAfter(targetAsMoment)
     }
 }
